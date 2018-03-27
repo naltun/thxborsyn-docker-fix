@@ -11,6 +11,6 @@ between the thesis of a broken Docker engine and the antithesis of not knowing h
 Everything below line 14 was written by github.com/borsyn and was posted to Issue #31546
 on github.com/moby/moby. I am hosting this solution here so I can leverage it in the future.
 
-This script is in the public domain
+This script is in the public domain.
 
 Godspeed, brave soul.
