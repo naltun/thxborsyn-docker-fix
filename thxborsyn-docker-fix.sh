@@ -6,8 +6,10 @@
 # not only sought to fix his woes but the community's, wrote this script as the synthesis
 # between the thesis of a broken Docker engine and the antithesis of not knowing how to fix it.
 #
-# Everything below line 14 was written by github.com/borsyn and was posted to Issue #31546
-# on github.com/moby/moby. I am hosting this solution here so I can leverage it in the future.
+# I have removed the sudo commands and replaced this with a more elegant solution. Although
+# this script has been modified from the original, I credit everything to github.com/borsyn
+# This script is adapted from the solution posted to Issue #31546 on github.com/moby/moby.
+# I am hosting this solution here so I can leverage it in the future.
 #
 # This script is in the public domain
 #
@@ -21,12 +23,15 @@
 #     https://docs.docker.com/engine/userguide/networking/default_network/build-bridges/
 #
 
-sudo brctl addbr docker0
-sudo ip addr add 192.168.42.1/24 dev docker0
-sudo ip link set dev docker0 up
-ip addr show docker0
-sudo systemctl restart docker
-sudo iptables -t nat -L -n
+if [[ "$EUID" -ne 0 ]]; then
+  echo 'You must be root or have superuser privileges to run this script. Please try again.'
+  exit 1
+fi
 
-# I lied, the line below was changed from exit(0)
+brctl addbr docker0
+ip addr add 192.168.42.1/24 dev docker0
+ip link set dev docker0 up
+ip addr show docker0
+systemctl restart docker
+iptables -t nat -L -n
 exit 0
